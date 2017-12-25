@@ -8,10 +8,15 @@ from sklearn.metrics import confusion_matrix
 import main_model
 import pandas as pd
 
+output_to_name = {}
+output_to_name[(1, 0)] = 'Common Rust'
+output_to_name[(0, 1)] = 'Southern Leaf Blight'
+output_to_name[(0, 0)] = 'No Disease'
+
 # Importing the dataset
 dataset = pd.read_csv('disease_dataset.csv')
 X = dataset.iloc[:, [1,2,3]].values
-y = dataset.iloc[:, 4].values
+y = dataset.iloc[:, [4,5]].values
 
 # Splitting the dataset into the Training set and Test set
 
@@ -46,7 +51,5 @@ def predict_disease(filename):
     print result_pd
     y_pred = classifier.predict(result_pd)
     result = y_pred[0]
-    if(result == 0):
-        return 'Common Rust'
-    else:
-        return 'Southern Leaf Blight'
+    print result
+    return output_to_name[tuple(result)]
